@@ -1,2 +1,6 @@
-name="irbid-city-center-site"
-compatibility_date="2026-09-11"
+name = "irbid-city-center-site"
+compatibility_date = "2026-09-11"
+
+# Astro 静态构建产物由 Workers Static Assets 直接托管
+[assets]
+directory = "./dist"

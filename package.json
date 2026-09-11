@@ -1,1 +1,22 @@
-{"name":"irbid-city-center-site","private":true,"version":"1.0.0","packageManager":"pnpm@10.11.1","scripts":{"check":"astro check","build":"astro build"}}
+{
+  "name": "irbid-city-center-site",
+  "private": true,
+  "version": "1.0.0",
+  "packageManager": "pnpm@10.11.1",
+  "scripts": {
+    "check": "astro check",
+    "build": "astro build",
+    "dev": "astro dev",
+    "preview": "astro preview"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "astro": "^7.3.2",
+    "typescript": "^5.9.2"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}
