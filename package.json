@@ -1,0 +1,1 @@
+{"name":"irbid-city-center-site","private":true,"version":"1.0.0","packageManager":"pnpm@10.11.1","scripts":{"check":"astro check","build":"astro build"}}
