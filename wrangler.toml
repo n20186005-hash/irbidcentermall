@@ -1,6 +1,8 @@
 ﻿name = "irbidcentermall"
 compatibility_date = "2026-09-11"
 
-# 全站静态预渲染，dist 直接由 Workers Static Assets 托管
+# 全站静态预渲染，dist 直接由 Workers Static Assets 托管。
+# 保持 html_handling 默认值（auto-trailing-slash）：它会解析 "/" -> "/index.html"，
+# 因此不能设成 "none"（会导致首页 404）。站内链接统一使用无后缀地址，避免 307 跳转。
 [assets]
 directory = "./dist"
