@@ -1,6 +1,8 @@
-name = "irbid-city-center-site"
+﻿name = "irbid-city-center-site"
 compatibility_date = "2026-09-11"
+compatibility_flags = ["nodejs_compat"]
+main = "./dist/_worker.js/index.js"
 
-# Astro 静态构建产物由 Workers Static Assets 直接托管
 [assets]
 directory = "./dist"
+binding = "ASSETS"

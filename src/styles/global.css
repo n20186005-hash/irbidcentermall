@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink-950: #101013;
+  --color-ink-900: #17171b;
+  --color-ink-800: #202026;
+  --color-metal-400: #8a8f98;
+  --color-metal-200: #c9ced6;
+  --color-gold-500: #f4a261;
+  --color-gold-400: #ffd166;
+}
+html { scroll-behavior: smooth; }
+body { font-family: "Tajawal", "Segoe UI", Tahoma, sans-serif; }

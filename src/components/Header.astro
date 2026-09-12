@@ -1,0 +1,39 @@
+---
+const links = [
+  { href: "#about", label: "نظرة عامة" },
+  { href: "#shopping", label: "التسوق" },
+  { href: "#dining", label: "المطاعم" },
+  { href: "#entertainment", label: "الترفيه" },
+  { href: "#visit", label: "الوصول" },
+  { href: "#plans", label: "خطط الزيارة" },
+  { href: "#faq", label: "الأسئلة" },
+];
+---
+<header
+  class="sticky top-0 z-50 border-b border-white/10 bg-ink-950/85 backdrop-blur"
+>
+  <nav
+    class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3"
+  >
+    <a href="/" class="flex items-center gap-2">
+      <img src="/favicon.svg" alt="" class="h-8 w-8" />
+      <span class="text-lg font-bold text-gold-400">سيتي سنتر إربد</span>
+    </a>
+    <ul class="hidden items-center gap-5 text-sm text-metal-200 lg:flex">
+      {
+        links.map((l) => (
+          <li>
+            <a class="transition hover:text-gold-400" href={l.href}>
+              {l.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <a
+      href="#visit"
+      class="rounded-full bg-gold-500 px-4 py-2 text-sm font-bold text-ink-950 transition hover:bg-gold-400"
+      >الموقع على الخريطة</a
+    >
+  </nav>
+</header>

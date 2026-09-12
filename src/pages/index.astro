@@ -1,29 +1,880 @@
 ---
-const title = 'سيتي سنتر إربد';
-const description = 'دليل معلوماتي مستقل عن مركز التسوق سيتي سنتر إربد في الأردن، يحتوي على معلومات الزيارة، المواقع، والمرافق.';
-const site = 'https://irbidcentermall.com';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Footer from "../components/Footer.astro";
+import interiorImg from "../assets/images/irbid-city-center-interior.jpg";
+import shoppingImg from "../assets/images/irbid-city-center-shopping.jpg";
+import diningImg from "../assets/images/irbid-city-center-food-court.jpg";
+import entranceImg from "../assets/images/irbid-city-center-entrance.jpg";
+import { Image } from "astro:assets";
+
+const title = "سيتي سنتر إربد (إربد) | دليل الزيارة والموقع والتسوق";
+const description =
+  "دليل شامل لسيتي سنتر إربد (Irbid City Centre) في مدينة إربد، محافظة إربد، الأردن: الموقع على الخريطة، ساعات العمل، التسوق والمطاعم والترفيه، مواقف السيارات، خطط زيارة للعائلات والمعالم القريبة.";
+const SITE = "https://irbidcentermall.com";
+const ATTRACTION_FULL = "سيتي سنتر إربد";
+const ATTRACTION_ALT = "Irbid City Centre";
+const CITY = "إربد";
+const REGION = "محافظة إربد";
+const COUNTRY = "الأردن";
+const POSTAL_CODE = "21110";
+const MAPS_EMBED =
+  "https://www.google.com/maps?q=Irbid%20City%20Centre%2C%20Irbid%2C%20Jordan&hl=ar&output=embed";
+const MAPS_LINK =
+  "https://www.google.com/maps/search/?api=1&query=Irbid+City+Centre+Irbid+Jordan";
+const GOVT_TOURISM = "https://www.visitjordan.com/";
+const NEARBY_1 = "وسط مدينة إربد (Irbid Downtown)";
+const NEARBY_2 = "جامعة اليرموك (Yarmouk University)";
+
+const faqs = [
+  {
+    q: "هل الدخول إلى سيتي سنتر إربد مجاني؟",
+    a: "نعم، الدخول إلى المركز التجاري مجاني بالكامل ولا توجد تذكرة دخول. الرسوم المطبقة تكون فقط على الخدمات الاختيارية مثل مواقف السيارات حسب الأنظمة المعمول بها في الموقع.",
+  },
+  {
+    q: "ما هي ساعات العمل؟",
+    a: "يعمل المركز عادة من الساعة 08:00 صباحاً حتى 00:00 منتصف الليل، وقد تختلف ساعات بعض المتاجر والمطاعم كما تتغير في الأعياد والمناسبات.",
+  },
+  {
+    q: "هل يوجد موقف سيارات؟",
+    a: "نعم، تتوفر مساحات لمواقف السيارات داخل نطاق المركز وخارجه، ويُنصح بالوصول قبل أوقات الذروة في أمسيات نهاية الأسبوع.",
+  },
+  {
+    q: "هل يناسب المركز العائلات والأطفال؟",
+    a: "نعم، يوفر المركز بيئة مناسبة للعائلات مع مساحات مخصصة للأطفال ومرافق للتنقل بالعربات، إضافة إلى خيارات متعددة للطعام تناسب الأطفال.",
+  },
+  {
+    q: "أين يقع سيتي سنتر إربد بالتحديد؟",
+    a: "يقع سيتي سنتر إربد في مدينة إربد شمال الأردن، على شارع Nathan Road (Jd Mall)، ويمكن الوصول إليه بالسيارة أو سيارات الأجرة أو وسائل النقل العام.",
+  },
+  {
+    q: "هل سيتي سنتر إربد مجاني للزيارة؟",
+    a: "نعم، يُعد سيتي سنتر إربد مساحة مفتوحة للزوار والدخول إليه مجاني على مدار العام، وتبقى الرسوم مرتبطة فقط بالخدمات الاختيارية إن وُجدت.",
+  },
+  {
+    q: "كم يستغرق وقت الزيارة المناسب؟",
+    a: "تتراوح الزيارة المعتادة بين ساعة ونصف وثلاث ساعات، ويمكن أن تمتد إلى أربع أو ست ساعات في حال الجمع بين التسوق وتناول الطعام والأنشطة الترفيهية.",
+  },
+  {
+    q: "ما أفضل وقت لتجنب الزحام؟",
+    a: "أيام الأسبوع قبل الساعة السادسة مساءً هي الأهدأ عادة، أما أمسيات نهاية الأسبوع فتكون أكثر ازدحاماً ويُفضّل فيها الوصول مبكراً.",
+  },
+  {
+    q: "هل تتوفر خدمات قريبة مثل الصيدليات والمصارف؟",
+    a: "تتوفر في نطاق المدينة والمحيط التجاري خدمات متنوعة تشمل صيدليات وأجهزة صراف آلي وفروع مصارف ومحطات وقود، دون أن يوصي هذا الدليل بجهة بعينها.",
+  },
+  {
+    q: "ما المعالم التي يمكن زيارتها قريباً من المركز؟",
+    a: "يمكن دمج الزيارة مع معالم قريبة مثل وسط مدينة إربد ومتحف دار السرايا وجامعة اليرموك، إضافة إلى مواقع أثرية في محيط المحافظة تصلح لرحلة يوم.",
+  },
+];
+
+const rating = {
+  "@type": "AggregateRating",
+  ratingValue: "4.2",
+  reviewCount: "16817",
+  bestRating: "5",
+};
+
+const geo = {
+  "@type": "GeoCoordinates",
+  latitude: 32.5357509,
+  longitude: 35.8627562,
+};
+
+const address = {
+  "@type": "PostalAddress",
+  streetAddress: "Jd Mall, Nathan Road 235",
+  addressLocality: "Irbid",
+  addressRegion: "Irbid Governorate",
+  postalCode: POSTAL_CODE,
+  addressCountry: "JO",
+};
+
+const ogImage = `${SITE}/irbid-city-center-main.jpg`;
+
+const jsonLd: Record<string, unknown>[] = [
+  {
+    "@context": "https://schema.org",
+    "@type": "TouristAttraction",
+    "@id": `${SITE}/#attraction`,
+    name: ATTRACTION_FULL,
+    alternateName: [ATTRACTION_ALT, `${CITY} ${ATTRACTION_FULL}`],
+    description,
+    url: SITE,
+    image: [ogImage],
+    address,
+    geo,
+    hasMap: MAPS_LINK,
+    sameAs: [MAPS_LINK, GOVT_TOURISM],
+    aggregateRating: rating,
+    openingHours: "Mo-Su 08:00-00:00",
+    isAccessibleForFree: true,
+    publicAccess: true,
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: "سيتي سنتر إربد",
+    alternateName: "Irbid City Centre",
+    description,
+    url: SITE,
+    address,
+    geo,
+    aggregateRating: rating,
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday",
+        ],
+        opens: "08:00",
+        closes: "00:00",
+      },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": `${SITE}/#faq`,
+    mainEntity: faqs.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${SITE}/#website`,
+    url: SITE,
+    name: `${ATTRACTION_FULL} — دليل الزيارة`,
+    inLanguage: "ar",
+    about: { "@id": `${SITE}/#attraction` },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "@id": `${SITE}/#breadcrumb`,
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: COUNTRY,
+        item: `${SITE}/`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: REGION,
+        item: `${SITE}/#location`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: CITY,
+        item: `${SITE}/#location`,
+      },
+      {
+        "@type": "ListItem",
+        position: 4,
+        name: ATTRACTION_FULL,
+        item: `${SITE}/`,
+      },
+    ],
+  },
+];
 ---
-<html lang="ar" dir="rtl">
-<head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>{title}</title>
-	<meta name="description" content={description} />
-	<meta property="og:title" content={title} />
-	<meta property="og:description" content={description} />
-	<meta property="og:type" content="website" />
-	<meta property="og:url" content={site} />
-	<meta property="og:locale" content="ar_JO" />
-	<meta name="twitter:card" content="summary_large_image" />
-	<link rel="canonical" href={site} />
-	<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-</head>
-<body>
-<h1>{title}</h1>
-<p>دليل معلوماتي مستقل عن مركز التسوق في إربد، الأردن.</p>
-<h2>الخريطة</h2>
-<iframe width="600" height="450" loading="lazy" src="https://www.google.com/maps/embed?pb=!1m18"></iframe>
-<footer>هذا الموقع دليل معلوماتي مستقل وليس الموقع الرسمي لسيتي سنتر إربد.</footer>
-</body>
-</html>
+<BaseLayout title={title} description={description} canonical="/">
+  <Fragment slot="head">
+    {
+      jsonLd.map((data) => (
+        <script type="application/ld+json" set:html={JSON.stringify(data)} />
+      ))
+    }
+  </Fragment>
+  <Header />
+  <main>
+    <Hero />
+
+    <nav
+      aria-label="مسار التنقل"
+      class="mx-auto max-w-6xl px-4 pt-8 text-xs text-metal-400"
+    >
+      <ol class="flex flex-wrap items-center gap-2">
+        <li><a class="hover:text-gold-400" href="/">الأردن</a></li>
+        <li aria-hidden="true">›</li>
+        <li><a class="hover:text-gold-400" href="#location">محافظة إربد</a></li>
+        <li aria-hidden="true">›</li>
+        <li><span class="text-metal-200">مدينة إربد</span></li>
+        <li aria-hidden="true">›</li>
+        <li>
+          <span class="text-gold-400">سيتي سنتر إربد (Irbid City Centre)</span>
+        </li>
+      </ol>
+    </nav>
+
+    <section id="about" class="mx-auto max-w-6xl px-4 py-16">
+      <p class="text-sm font-bold tracking-widest text-gold-400">نظرة عامة</p>
+      <h2 class="mt-2 text-3xl font-extrabold text-white">
+        عن سيتي سنتر إربد (Irbid City Centre)
+      </h2>
+      <div class="mt-6 grid gap-8 lg:grid-cols-3">
+        <div class="lg:col-span-2 space-y-4 text-metal-200">
+          <p class="leading-8">
+            مرحباً بكم في <strong class="text-white">سيتي سنتر إربد</strong>،
+            المعروف أيضاً باسم
+            <strong class="text-white">Irbid City Centre</strong>، وهو وجهة
+            تجارية وترفيهية تقع في قلب مدينة
+            <strong class="text-white">إربد</strong>، محافظة إربد، الأردن. يقدّم
+            هذا الدليل معلومات عملية للزوار تشمل الموقع والوصول وساعات العمل
+            والمرافق والخطط المقترحة للزيارة والمعالم المحيطة.
+          </p>
+          <p class="leading-8">
+            يُعد سيتي سنتر إربد واحداً من أبرز المراكز التجارية في شمال الأردن،
+            ويقع على شارع Nathan Road في مدينة إربد. يجمع المركز بين التسوق
+            والتناول والترفيه العائلي في مساحة داخلية واسعة، ما يجعله وجهة يومية
+            لسكان المدينة والمناطق المجاورة.
+          </p>
+          <p class="leading-8">
+            تبلغ المساحة التجارية للمركز نحو 87,000 متر مربع، ويضم أكثر من 250
+            علامة تجارية محلية ودولية موزعة على متاجر الأزياء والإلكترونيات
+            والمستلزمات المنزلية، إلى جانب منطقة مطاعم ومقاهٍ ومساحات ترفيه
+            مخصصة للأطفال. هذا التنوع يجعل الزيارة مناسبة لقضاء عدة ساعات دون
+            الحاجة إلى مغادرة المبنى.
+          </p>
+          <p class="leading-8">
+            يقع المركز ضمن نطاق حضري نشط في إربد، ويتميز بقربه من الجامعات
+            والمؤسسات والمناطق السكنية، وهو ما يمنحه حضوراً يومياً على مدار
+            الأسبوع. كما يعمل يومياً من الساعة 08:00 صباحاً حتى 00:00 منتصف
+            الليل، مع احتمال تغيّر ساعات بعض المتاجر في الأعياد والمناسبات.
+          </p>
+        </div>
+        <Image
+          src={interiorImg}
+          alt="مساحة داخلية واسعة في سيتي سنتر إربد مع إضاءة طبيعية ومسار للمتسوقين"
+          widths={[480, 800, 1200]}
+          sizes="(min-width: 1024px) 33vw, 100vw"
+          loading="lazy"
+          class="h-full w-full rounded-2xl object-cover"
+        />
+      </div>
+      <dl class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        {
+          [
+            ["87,000 م²", "مساحة تجارية"],
+            ["+250", "علامة تجارية"],
+            ["08:00 – 00:00", "ساعات العمل"],
+            ["4.2 / 5", "تقييم الزوار"],
+          ].map(([value, label]) => (
+            <div class="rounded-2xl border border-white/10 bg-ink-900 p-5">
+              <dt class="text-xs text-metal-400">{label}</dt>
+              <dd class="mt-2 text-xl font-extrabold text-gold-400">{value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <section id="shopping" class="border-y border-white/10 bg-ink-900/60">
+      <div class="mx-auto max-w-6xl px-4 py-16">
+        <p class="text-sm font-bold tracking-widest text-gold-400">
+          تجربة التسوق
+        </p>
+        <h2 class="mt-2 text-3xl font-extrabold text-white">
+          متاجر متنوعة تحت سقف واحد
+        </h2>
+        <p class="mt-4 max-w-3xl leading-8 text-metal-200">
+          يضم المركز مزيجاً من المتاجر المحلية والعلامات التجارية الدولية، موزعة
+          بحسب الفئة لتسهيل التنقل بينها. ويمكن للزائر إنجاز مشتريات العائلة
+          اليومية والملابس والمستلزمات المنزلية في زيارة واحدة.
+        </p>
+        <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {
+            [
+              ["متاجر العلامات التجارية", "وحدات لماركات عالمية وإقليمية معروفة"],
+              ["الأزياء والملابس", "ملابس رجالية ونسائية وأطفال وأحذية وحقائب"],
+              ["المستلزمات المنزلية", "أدوات منزلية ومطبخ ومفروشات وإلكترونيات"],
+              ["مشتريات العائلة", "سوبرماركت وصيدلية ومتاجر خدمات يومية"],
+            ].map(([t, d]) => (
+              <article class="rounded-2xl border border-white/10 bg-ink-900 p-6">
+                <h3 class="font-bold text-white">{t}</h3>
+                <p class="mt-3 text-sm leading-7 text-metal-400">{d}</p>
+              </article>
+            ))
+          }
+        </div>
+        <Image
+          src={shoppingImg}
+          alt="مسار المتسوقين داخل سيتي سنتر إربد أمام واجهات المتاجر"
+          widths={[640, 1024, 1600]}
+          sizes="(min-width: 1024px) 80vw, 100vw"
+          loading="lazy"
+          class="mt-10 h-72 w-full rounded-2xl object-cover sm:h-96"
+        />
+      </div>
+    </section>
+
+    <section id="dining" class="mx-auto max-w-6xl px-4 py-16">
+      <p class="text-sm font-bold tracking-widest text-gold-400">المطاعم</p>
+      <h2 class="mt-2 text-3xl font-extrabold text-white">
+        تجربة طعام داخل المركز وحوله
+      </h2>
+      <div class="mt-6 grid gap-8 lg:grid-cols-3">
+        <div class="lg:col-span-2 space-y-4 leading-8 text-metal-200">
+          <p>
+            تتوزع مناطق الطعام في المركز بين صالات مشتركة تتجمع فيها عدة منافذ
+            للوجبات السريعة، ومقاهٍ هادئة مناسبة للاجتماعات أو الاستراحة، إضافة
+            إلى مطاعم بجلسات عائلية. ويتركز النشاط عادة في فترة الغداء والمساء.
+          </p>
+          <p>
+            أما محيط المركز في إربد فيضم خيارات واسعة تمثل المطبخ الأردني
+            والشرقي، ومن أشهر الأطباق المحلية التي يبحث عنها الزائر: المنسف،
+            والمقلوبة، والفلافل والحمص، والكنافة كمشروب حلوى، إضافة إلى
+            المشاوي والشاورما.
+          </p>
+          <p class="rounded-2xl border border-white/10 bg-ink-900 p-5 text-sm text-metal-400">
+            ملاحظة: هذا الدليل محايد ولا يوصي بمطعم أو متجر بعينه، وننصح بالتحقق
+            من التقييمات المحلية الحديثة قبل الزيارة.
+          </p>
+        </div>
+        <Image
+          src={diningImg}
+          alt="منطقة المطاعم والمقاهي في سيتي سنتر إربد مع جلسات مشتركة"
+          widths={[480, 800, 1200]}
+          sizes="(min-width: 1024px) 33vw, 100vw"
+          loading="lazy"
+          class="h-full w-full rounded-2xl object-cover"
+        />
+      </div>
+    </section>
+
+    <section id="entertainment" class="border-y border-white/10 bg-ink-900/60">
+      <div class="mx-auto max-w-6xl px-4 py-16">
+        <p class="text-sm font-bold tracking-widest text-gold-400">
+          الترفيه والعائلة
+        </p>
+        <h2 class="mt-2 text-3xl font-extrabold text-white">
+          أنشطة للأطفال ولجميع أفراد الأسرة
+        </h2>
+        <div class="mt-10 grid gap-6 md:grid-cols-3">
+          {
+            [
+              [
+                "مناطق ألعاب الأطفال",
+                "مساحات داخلية آمنة للأطفال الصغار مع ألعاب مناسبة لأعمار مختلفة، وتخضع لإشراف ميداني.",
+              ],
+              [
+                "جلسات عائلية ومساحات استراحة",
+                "مقاعد ومقاهي موزعة داخل المركز تتيح للعائلات الاستراحة بين التسوق والتنقل.",
+              ],
+              [
+                "فعاليات وعروض موسمية",
+                "يقام على مدار العام عدد من الفعاليات والأنشطة الموسمية في الساحات الداخلية.",
+              ],
+            ].map(([t, d]) => (
+              <article class="rounded-2xl border border-white/10 bg-ink-900 p-6">
+                <h3 class="font-bold text-white">{t}</h3>
+                <p class="mt-3 text-sm leading-7 text-metal-400">{d}</p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="visit-info" class="mx-auto max-w-6xl px-4 py-16">
+      <p class="text-sm font-bold tracking-widest text-gold-400">
+        معلومات الزيارة
+      </p>
+      <h2 class="mt-2 text-3xl font-extrabold text-white">
+        ساعات العمل والرسوم
+      </h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        {
+          [
+            ["ساعات العمل", "يومياً من 08:00 صباحاً حتى 00:00 منتصف الليل"],
+            ["الدخول", "دخول المركز التجاري مجاني"],
+            ["الرسوم", "رسوم مواقف السيارات تُطبق حسب الأنظمة المعمول بها في الموقع"],
+          ].map(([t, d]) => (
+            <article class="rounded-2xl border border-white/10 bg-ink-900 p-6">
+              <h3 class="font-bold text-gold-400">{t}</h3>
+              <p class="mt-3 text-sm leading-7 text-metal-200">{d}</p>
+            </article>
+          ))
+        }
+      </div>
+      <p class="mt-6 text-sm leading-7 text-metal-400">
+        قد تتغير ساعات بعض المتاجر والمطاعم دون إشعار، خصوصاً خلال الأعياد
+        والمناسبات الرسمية. يُنصح بالتحقق من حساب الجهات الرسمية عند التخطيط
+        لزيارة في أوقات غير معتادة.
+      </p>
+    </section>
+
+    <section id="visit" class="border-y border-white/10 bg-ink-900/60">
+      <div class="mx-auto max-w-6xl px-4 py-16">
+        <p class="text-sm font-bold tracking-widest text-gold-400">الوصول</p>
+        <h2 id="location" class="mt-2 text-3xl font-extrabold text-white">
+          الموقع وكيفية زيارة سيتي سنتر إربد في مدينة إربد
+        </h2>
+        <p class="mt-4 max-w-3xl leading-8 text-metal-200">
+          يقع المركز في مدينة إربد على شارع Nathan Road (Jd Mall)، ويمكن الوصول
+          إليه بسهولة بالسيارة أو سيارات الأجرة أو وسائل النقل العام.
+        </p>
+        <div class="mt-10 grid gap-8 lg:grid-cols-2">
+          <div class="space-y-4">
+            {
+              [
+                [
+                  "بالسيارة الخاصة",
+                  "الوصول عبر الطرق الرئيسية في إربد باتجاه شارع Nathan Road، مع توفر مساحات لوقوف السيارات داخل النطاق التجاري.",
+                ],
+                [
+                  "سيارات الأجرة وتطبيقات النقل",
+                  "يمكن طلب سيارة أجرة أو استخدام تطبيقات النقل الذكية، وحدد الوجهة باسم Irbid City Centre.",
+                ],
+                [
+                  "النقل العام",
+                  "تخدم المنطقة خطوط الحافلات وسيارات النقل العام المتجهة إلى وسط مدينة إربد، مع مسافة سير قصيرة عند الوصول.",
+                ],
+              ].map(([t, d]) => (
+                <article class="rounded-2xl border border-white/10 bg-ink-900 p-6">
+                  <h3 class="font-bold text-white">{t}</h3>
+                  <p class="mt-3 text-sm leading-7 text-metal-400">{d}</p>
+                </article>
+              ))
+            }
+          </div>
+          <Image
+            src={entranceImg}
+            alt="مدخل سيتي سنتر إربد ومنطقة الوصول أمام المبنى في مدينة إربد، الأردن"
+            widths={[480, 800, 1200]}
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            loading="lazy"
+            class="h-full w-full rounded-2xl object-cover"
+          />
+        </div>
+        <div class="mt-10 overflow-hidden rounded-2xl border border-white/10">
+          <iframe
+            title="خريطة موقع سيتي سنتر إربد على خرائط جوجل"
+            src={MAPS_EMBED}
+            width="100%"
+            height="420"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            style="border:0"
+          ></iframe>
+        </div>
+        <div class="mt-4">
+          <a
+            href={MAPS_LINK}
+            target="_blank"
+            rel="noopener"
+            class="inline-block rounded-full bg-gold-500 px-6 py-3 font-bold text-ink-950 transition hover:bg-gold-400"
+            >فتح الموقع على خرائط جوجل</a
+          >
+        </div>
+        <p class="mt-6 text-sm leading-7 text-metal-400">
+          للحصول على معلومات رسمية ومحدّثة عن السياحة في المنطقة، يمكن الرجوع
+          إلى
+          <a
+            class="text-gold-400 underline decoration-dotted hover:text-gold-500"
+            href={GOVT_TOURISM}
+            target="_blank"
+            rel="noopener noreferrer"
+            >البوابة الرسمية للسياحة في الأردن</a
+          >.
+        </p>
+      </div>
+    </section>
+
+    <section id="parking" class="mx-auto max-w-6xl px-4 py-16">
+      <p class="text-sm font-bold tracking-widest text-gold-400">
+        مواقف السيارات
+      </p>
+      <h2 class="mt-2 text-3xl font-extrabold text-white">
+        معلومات الوقوف والوصول
+      </h2>
+      <ul class="mt-6 grid gap-4 md:grid-cols-3">
+        {
+          [
+            "تتوفر مساحات وقوف للسيارات داخل نطاق المركز وخارجه، مع مداخل قريبة من الوحدات التجارية.",
+            "تشهد أمسيات نهاية الأسبوع وأوقات العروض ضغطاً على المواقف، ويُنصح بالوصول أبكر.",
+            "قد تُطبق رسوم على الوقوف حسب الأنظمة المعمول بها في الموقع، ويُفضّل التحقق عند الدخول.",
+          ].map((t) => (
+            <li class="rounded-2xl border border-white/10 bg-ink-900 p-6 text-sm leading-7 text-metal-200">
+              {t}
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section id="best-time" class="border-y border-white/10 bg-ink-900/60">
+      <div class="mx-auto max-w-6xl px-4 py-16">
+        <p class="text-sm font-bold tracking-widest text-gold-400">
+          أفضل وقت للزيارة
+        </p>
+        <h2 class="mt-2 text-3xl font-extrabold text-white">
+          متى تزور المركز؟
+        </h2>
+        <div class="mt-8 grid gap-6 md:grid-cols-3">
+          {
+            [
+              [
+                "أيام الأسبوع",
+                "الزيارة قبل الساعة السادسة مساءً تمنحك هدوءاً أكبر في المتاجر والمطاعم ومساحات وقوف أسهل.",
+              ],
+              [
+                "نهاية الأسبوع",
+                "مناسبة للتسوق العائلي والأنشطة الترفيهية، مع ازدحام نسبي يبدأ بعد العصر.",
+              ],
+              [
+                "مدة الزيارة المقترحة",
+                "من ساعة ونصف إلى ثلاث ساعات تغطي التسوق وتناول الطعام وجولة في المركز.",
+              ],
+            ].map(([t, d]) => (
+              <article class="rounded-2xl border border-white/10 bg-ink-900 p-6">
+                <h3 class="font-bold text-white">{t}</h3>
+                <p class="mt-3 text-sm leading-7 text-metal-400">{d}</p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="plans" class="mx-auto max-w-6xl px-4 py-16">
+      <p class="text-sm font-bold tracking-widest text-gold-400">
+        خطط حسب الفئة
+      </p>
+      <h2 class="mt-2 text-3xl font-extrabold text-white">
+        ثلاث خطط زيارة مصممة لأسلوبك
+      </h2>
+      <p class="mt-4 max-w-3xl leading-8 text-metal-200">
+        اختر الخطة بحسب تكوين مجموعتك وإيقاع الزيارة. الخطط إرشادية ويمكن دمجها
+        حسب الوقت المتاح.
+      </p>
+      <div class="mt-10 grid gap-6 lg:grid-cols-3">
+        {
+          [
+            {
+              title: "العائلات مع الأطفال",
+              tag: "إيقاع متوسط · 2–3 ساعات",
+              steps: [
+                "البدء من منطقة ألعاب الأطفال لإشغال الصغار في أول الزيارة.",
+                "جولة تسوق قصيرة في متاجر الأطفال والأزياء القريبة.",
+                "استراحة طعام في صالة الطعام المشتركة قبل المغادرة.",
+              ],
+            },
+            {
+              title: "التصوير والاستكشاف المعماري",
+              tag: "إيقاع هادئ · 1–2 ساعة",
+              steps: [
+                "تصوير الواجهة الخارجية والمدخل في الإضاءة الصباحية.",
+                "ركّز على الأسقف والإضاءة الطبيعية والخطوط المعمارية داخلياً.",
+                "جولة أخيرة عند الساحات الداخلية قبل ساعات الذروة.",
+              ],
+            },
+            {
+              title: "تنقل مريح ومنخفض الجهد",
+              tag: "إيقاع بطيء · حسب الحاجة",
+              steps: [
+                "استخدام المصاعد والسلالم المتحركة للتنقل بين الطوابق.",
+                "اختيار الجلسات القريبة من المداخل لتقليل مسافة السير.",
+                "تقسيم الجولة إلى فترات قصيرة مع راحات متكررة.",
+              ],
+            },
+          ].map((p) => (
+            <article class="flex flex-col rounded-2xl border border-white/10 bg-ink-900 p-6">
+              <h3 class="text-lg font-bold text-gold-400">{p.title}</h3>
+              <p class="mt-1 text-xs text-metal-400">{p.tag}</p>
+              <ol class="mt-4 space-y-3 text-sm leading-7 text-metal-200">
+                {p.steps.map((s, i) => (
+                  <li class="flex gap-2">
+                    <span class="text-gold-400">{i + 1}.</span>
+                    <span>{s}</span>
+                  </li>
+                ))}
+              </ol>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section id="routes" class="border-y border-white/10 bg-ink-900/60">
+      <div class="mx-auto max-w-6xl px-4 py-16">
+        <p class="text-sm font-bold tracking-widest text-gold-400">
+          مسارات مقترحة
+        </p>
+        <h2 class="mt-2 text-3xl font-extrabold text-white">
+          مسار نصف يوم ومسار يوم كامل
+        </h2>
+        <div class="mt-10 grid gap-6 lg:grid-cols-2">
+          {
+            [
+              {
+                title: "مسار نصف يوم",
+                time: "2 – 3 ساعات",
+                steps: [
+                  "الوصول والتنقل إلى الطابق الرئيسي.",
+                  "جولة تسوق مركزة على متجرين أو ثلاثة.",
+                  "استراحة قهوة أو وجبة سريعة.",
+                  "شراء احتياجات منزلية والمغادرة.",
+                ],
+              },
+              {
+                title: "مسار يوم كامل",
+                time: "4 – 6 ساعات",
+                steps: [
+                  "بداية صباحية لتفادي الزحام.",
+                  "جولة تسوق شاملة بين الطوابق.",
+                  "غداء في منطقة المطاعم.",
+                  "جلسة ترفيه للأطفال أو نشاط موسمي.",
+                  "جولة قصيرة في محيط المدينة قبل المغادرة.",
+                ],
+              },
+            ].map((r) => (
+              <article class="rounded-2xl border border-white/10 bg-ink-900 p-6">
+                <div class="flex items-baseline justify-between gap-3">
+                  <h3 class="text-lg font-bold text-white">{r.title}</h3>
+                  <span class="text-xs text-gold-400">{r.time}</span>
+                </div>
+                <ol class="mt-4 space-y-3 text-sm leading-7 text-metal-200">
+                  {r.steps.map((s, i) => (
+                    <li class="flex gap-2">
+                      <span class="text-gold-400">{i + 1}.</span>
+                      <span>{s}</span>
+                    </li>
+                  ))}
+                </ol>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="mx-auto max-w-6xl px-4 py-16">
+      <p class="text-sm font-bold tracking-widest text-gold-400">
+        خدمات الزوار والمرافق
+      </p>
+      <h2 class="mt-2 text-3xl font-extrabold text-white">
+        ما يمكن أن تحتاجه أثناء الزيارة
+      </h2>
+      <p class="mt-4 max-w-3xl leading-8 text-metal-200">
+        فيما يلي وصف عام لأنواع الخدمات المتوفرة داخل المركز وفي محيطه القريب،
+        دون الإشارة إلى أي جهة تجارية بعينها.
+      </p>
+      <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {
+          [
+            [
+              "دورات المياه والمرافق العامة",
+              "مرافق موزعة على الطوابق، مع مرافق مهيأة لأصحاب الاحتياجات الخاصة ومساحات لتغيير ملابس الأطفال.",
+            ],
+            [
+              "مواقف السيارات",
+              "مساحات وقوف داخل نطاق المركز وخارجه، مع تفضيل الوصول المبكر في أوقات الذروة.",
+            ],
+            [
+              "الطعام والمقاهي",
+              "صالات طعام مشتركة ومنافذ وجبات سريعة ومقاهٍ تقدم خيارات متعددة على مدار اليوم.",
+            ],
+            [
+              "الإقامة",
+              "تتوفر في محيط مدينة إربد أنواع مختلفة من أماكن الإقامة مثل الفنادق والشقق الفندقية.",
+            ],
+            [
+              "التسوق اليومي والسوبرماركت",
+              "متاجر بقالة ومستلزمات يومية داخل المركز، إضافة إلى أسواق ومتاجر في المحيط.",
+            ],
+            [
+              "الوقود وشحن المركبات",
+              "محطات وقود على الطرق الرئيسية القريبة، وتنتشر نقاط شحن المركبات الكهربائية في بعض المواقع بالمدينة.",
+            ],
+            [
+              "الخدمات المالية",
+              "أجهزة صراف آلي وفروع مصارف في نطاق المدينة والمحيط التجاري.",
+            ],
+            [
+              "الرعاية الصحية",
+              "صيدليات ومراكز طبية قريبة للاحتياجات الطارئة البسيطة.",
+            ],
+            [
+              "خدمات العائلات",
+              "مرافق للأطفال ومساحات استراحة وخدمات تناسب التنقل بالعربات.",
+            ],
+          ].map(([t, d]) => (
+            <article class="rounded-2xl border border-white/10 bg-ink-900 p-6">
+              <h3 class="font-bold text-gold-400">{t}</h3>
+              <p class="mt-3 text-sm leading-7 text-metal-400">{d}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section id="nearby" class="border-y border-white/10 bg-ink-900/60">
+      <div class="mx-auto max-w-6xl px-4 py-16">
+        <p class="text-sm font-bold tracking-widest text-gold-400">
+          المعالم القريبة
+        </p>
+        <h2 class="mt-2 text-3xl font-extrabold text-white">
+          المعالم القريبة من سيتي سنتر إربد
+        </h2>
+        <p class="mt-4 max-w-3xl leading-8 text-metal-200">
+          عند زيارة <strong class="text-white">سيتي سنتر إربد</strong>، يمكن
+          للزوار استكشاف عدد من المعالم التاريخية والوجهات القريبة في نفس
+          الرحلة، ومن أبرزها
+          <strong class="text-white">وسط مدينة إربد (Irbid Downtown)</strong> و
+          <strong class="text-white">جامعة اليرموك (Yarmouk University)</strong
+          >، إضافة إلى متحف دار السرايا ومواقع أثرية في محيط المحافظة. إربد
+          مدينة جامعية ذات تاريخ طويل، ما يجعل دمج الزيارة مع هذه المعالم
+          ممكناً خلال يوم واحد.
+        </p>
+        <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {
+            [
+              [
+                "وسط مدينة إربد",
+                "منطقة تجارية تاريخية تضم أسواقاً تقليدية ومباني قديمة ومطاعم محلية.",
+              ],
+              [
+                "جامعة اليرموك",
+                "من أكبر الجامعات في الأردن، وتقع في نطاق قريب من وسط المدينة.",
+              ],
+              [
+                "متحف دار السرايا",
+                "متحف يعرض تاريخ المنطقة وتراثها، ويقع في مبنى تاريخي وسط إربد.",
+              ],
+              [
+                "مواقع أثرية في المحيط",
+                "تتوفر في محيط المحافظة مواقع أثرية شهيرة تصلح لرحلة يوم منفصلة.",
+              ],
+            ].map(([t, d]) => (
+              <article class="rounded-2xl border border-white/10 bg-ink-900 p-6">
+                <h3 class="font-bold text-white">{t}</h3>
+                <p class="mt-3 text-sm leading-7 text-metal-400">{d}</p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="background" class="mx-auto max-w-6xl px-4 py-16">
+      <p class="text-sm font-bold tracking-widest text-gold-400">
+        خلفية معرفية
+      </p>
+      <h2 class="mt-2 text-3xl font-extrabold text-white">
+        التاريخ والأهمية: إربد وسيتي سنتر إربد
+      </h2>
+      <div class="mt-6 grid gap-8 lg:grid-cols-2">
+        <div class="space-y-4 leading-8 text-metal-200">
+          <p>
+            تُعد إربد من أكبر مدن شمال الأردن وأكثرها كثافة سكانية، وتلعب فيها
+            الجامعات دوراً محورياً في تشكيل حركة السوق والطلب على المساحات
+            التجارية والترفيهية. وقد شهدت المدينة خلال العقود الأخيرة تحولاً من
+            الأسواق التقليدية في الوسط إلى مراكز تجارية حديثة مغلقة.
+          </p>
+          <p>
+            يجمع نموذج المراكز التجارية الحديثة بين التسوق والترفيه والخدمات في
+            مساحة واحدة مضبوطة الحرارة، وهو نموذج انتشر في المدن الجامعية لأنه
+            يستوعب أعداداً كبيرة من الزوار على مدار العام.
+          </p>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-ink-900 p-6">
+          <h3 class="font-bold text-white">مسؤولية الزائر</h3>
+          <ul class="mt-4 space-y-3 text-sm leading-7 text-metal-400">
+            <li>احترام أنظمة المركز وتعليمات الأمن والسلامة المعلنة.</li>
+            <li>المحافظة على نظافة المرافق العامة والمساحات المشتركة.</li>
+            <li>مراقبة الأطفال في مناطق الألعاب والسلالم المتحركة.</li>
+            <li>التحقق من ساعات العمل وأي رسوم قبل الزيارة في المواسم.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section id="sources" class="mx-auto max-w-6xl px-4 py-16">
+      <p class="text-sm font-bold tracking-widest text-gold-400">
+        المصادر والمنهجية
+      </p>
+      <h2 class="mt-2 text-3xl font-extrabold text-white">
+        كيف أُعدّ هذا الدليل
+      </h2>
+      <div class="mt-8 grid gap-8 lg:grid-cols-3">
+        <div class="lg:col-span-2 space-y-4 leading-8 text-metal-200">
+          <p>
+            يعتمد هذا الدليل على مراجعة معلومات عامة متاحة للجمهور حول الموقع
+            وساعات العمل والمرافق، مع التركيز على ما يهم الزائر عملياً. نعرض
+            المعلومة بصيغة محايدة دون تفضيل جهة تجارية على أخرى.
+          </p>
+          <p>
+            قد تتغير التفاصيل مثل ساعات العمل أو الخدمات المتاحة أو الرسوم دون
+            إشعار، ولهذا نوصي دائماً بالتحقق من القنوات الرسمية قبل الزيارة
+            وبخاصة في الأعياد والمواسم.
+          </p>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-ink-900 p-6">
+          <h3 class="font-bold text-white">مصادر للتحقق</h3>
+          <ul class="mt-4 space-y-3 text-sm leading-7 text-metal-400">
+            <li>
+              <a
+                class="text-gold-400 underline decoration-dotted hover:text-gold-500"
+                href={GOVT_TOURISM}
+                target="_blank"
+                rel="noopener noreferrer"
+                >البوابة الرسمية للسياحة في الأردن</a
+              >
+            </li>
+            <li>
+              <a
+                class="text-gold-400 underline decoration-dotted hover:text-gold-500"
+                href={MAPS_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                >خرائط جوجل — الموقع والتقييمات</a
+              >
+            </li>
+            <li>مصادر محلية عامة عن مدينة إربد ومعالمها.</li>
+          </ul>
+          <p class="mt-4 text-xs text-metal-400">
+            لا يوفّر هذا الموقع خدمات حجز أو بيع، ولا يمثل أي جهة رسمية.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="border-t border-white/10 bg-ink-900/60">
+      <div class="mx-auto max-w-4xl px-4 py-16">
+        <p class="text-sm font-bold tracking-widest text-gold-400">
+          الأسئلة الشائعة
+        </p>
+        <h2 class="mt-2 text-3xl font-extrabold text-white">
+          أسئلة يطرحها الزوار عادة
+        </h2>
+        <div class="mt-8 space-y-4">
+          {
+            faqs.map((f) => (
+              <details class="group rounded-2xl border border-white/10 bg-ink-900 p-6">
+                <summary class="cursor-pointer list-none font-bold text-white marker:hidden">
+                  {f.q}
+                </summary>
+                <p class="mt-3 text-sm leading-7 text-metal-400">{f.a}</p>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>

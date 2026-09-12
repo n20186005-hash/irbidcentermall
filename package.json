@@ -2,12 +2,19 @@
   "name": "irbid-city-center-site",
   "private": true,
   "version": "1.0.0",
+  "type": "module",
   "packageManager": "pnpm@10.11.1",
   "scripts": {
-    "check": "astro check",
-    "build": "astro build",
     "dev": "astro dev",
-    "preview": "astro preview"
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^12.6.0",
+    "@tailwindcss/vite": "^4.1.0",
+    "sharp": "^0.34.0",
+    "tailwindcss": "^4.1.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
@@ -16,7 +23,9 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
-      "esbuild"
+      "esbuild",
+      "sharp",
+      "workerd"
     ]
   }
 }
