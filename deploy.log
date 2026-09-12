@@ -1,0 +1,50 @@
+
+ ⛅️ wrangler 4.131.1
+────────────────────
+🌀 Building list of assets...
+✨ Read 34 files from the assets directory C:\Users\Administrator\Documents\GitHub\irbidcentermall\dist
+🌀 Starting asset upload...
+🌀 Found 28 new or modified static assets to upload. Proceeding with upload...
++ /favicon-16.png
++ /favicon-32.png
++ /apple-touch-icon.png
++ /privacy-policy.html
++ /_astro/irbid-city-center-main.DbIixI05_2o8mtG.webp
++ /index.html
++ /_astro/irbid-city-center-interior.Mg2AVFYj_2tCPCE.webp
++ /_astro/irbid-city-center-shopping.ByFWwrCQ_Z1p1PcP.webp
++ /_astro/irbid-city-center-entrance.CnnfPVar_ZjEJOW.webp
++ /_astro/irbid-city-center-shopping.ByFWwrCQ_hYr69.webp
++ /favicon.svg
++ /sw.js
++ /icon-192.png
++ /icon-512.png
++ /_astro/irbid-city-center-entrance.CnnfPVar_ZkEghU.webp
++ /_astro/irbid-city-center-shopping.ByFWwrCQ_ZU4j9H.webp
++ /_astro/irbid-city-center-food-court.C74LK4Aw_b6sn0.webp
++ /_astro/irbid-city-center-food-court.C74LK4Aw_24r8kk.webp
++ /_astro/irbid-city-center-interior.Mg2AVFYj_1by1kR.webp
++ /_routes.json
++ /manifest.webmanifest
++ /terms.html
++ /_astro/index.BlZyqkas.css
++ /_astro/irbid-city-center-food-court.C74LK4Aw_ZpdHg4.webp
++ /_astro/irbid-city-center-entrance.CnnfPVar_Z1egUB8.webp
++ /_astro/irbid-city-center-entrance.CnnfPVar_ZEuehD.webp
++ /_astro/irbid-city-center-interior.Mg2AVFYj_ZpMeL1.webp
++ /_astro/irbid-city-center-food-court.C74LK4Aw_44Rgc.webp
+Uploaded 9 of 28 assets
+Uploaded 18 of 28 assets
+Uploaded 28 of 28 assets
+✨ Success! Uploaded 28 files (2 already uploaded) (4.13 sec)
+
+Total Upload: 562.76 KiB / gzip: 131.54 KiB
+Worker Startup Time: 32 ms
+Your Worker has access to the following bindings:
+Binding            Resource      
+env.ASSETS         Assets        
+
+Uploaded irbidcentermall (10.49 sec)
+Deployed irbidcentermall triggers (2.88 sec)
+  https://irbidcentermall.i080465.workers.dev
+Current Version ID: ccf77ac3-9e8a-46eb-9140-05eff9a77242

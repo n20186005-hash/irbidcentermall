@@ -1,8 +1,6 @@
-﻿name = "irbid-city-center-site"
+﻿name = "irbidcentermall"
 compatibility_date = "2026-09-11"
-compatibility_flags = ["nodejs_compat"]
-main = "./dist/_worker.js/index.js"
 
+# 全站静态预渲染，dist 直接由 Workers Static Assets 托管
 [assets]
 directory = "./dist"
-binding = "ASSETS"
