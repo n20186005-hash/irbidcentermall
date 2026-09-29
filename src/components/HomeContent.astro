@@ -1,0 +1,456 @@
+---
+import { Image } from "astro:assets";
+import { content, localeMeta, type Locale } from "../i18n";
+import heroImg from "../assets/images/irbid-city-center-main.jpg";
+import interiorImg from "../assets/images/irbid-city-center-interior.jpg";
+import shoppingImg from "../assets/images/irbid-city-center-shopping.jpg";
+import diningImg from "../assets/images/irbid-city-center-food-court.jpg";
+import entranceImg from "../assets/images/irbid-city-center-entrance.jpg";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props as Props;
+const c = content[locale];
+const meta = localeMeta[locale];
+const MAPS_EMBED = `https://www.google.com/maps?q=Irbid%20City%20Centre%2C%20Irbid%2C%20Jordan&hl=${locale === "ar" ? "ar" : "en"}&output=embed`;
+const MAPS_LINK = "https://maps.app.goo.gl/L71ekukFyjaVPVxZ9";
+const GOVT_TOURISM = "https://www.visitjordan.com/";
+const breadcrumb = locale === "ar"
+  ? [
+      { label: "الأردن", href: "/" },
+      { label: "محافظة إربد", href: "#location" },
+      { label: "مدينة إربد", href: "#location" },
+    ]
+  : [
+      { label: "Jordan", href: "/" },
+      { label: "Irbid Governorate", href: "#location" },
+      { label: "Irbid", href: "#location" },
+    ];
+---
+
+<main>
+  <section class="relative overflow-hidden">
+    <Image
+      src={heroImg}
+      alt={locale === "ar"
+        ? "سيتي سنتر إربد (Irbid City Centre) — المنظر الرئيسي في مدينة إربد، الأردن"
+        : "Irbid City Center (سيتي سنتر إربد) — main view in Irbid, Jordan"}
+      widths={[640, 1024, 1600, 1920]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+      class="absolute inset-0 h-full w-full object-cover"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/70 to-ink-950/40">
+    </div>
+    <div class="relative mx-auto flex min-h-[88vh] max-w-6xl flex-col justify-end px-4 py-16">
+      <p class="mb-3 text-sm font-bold tracking-widest text-gold-400">{c.hero.eyebrow}</p>
+      <h1 class="text-4xl font-extrabold text-white sm:text-6xl">{c.hero.h1}</h1>
+      <p class="mt-3 max-w-2xl text-lg text-metal-200">{c.hero.sub}</p>
+      <div class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
+        {
+          c.hero.meta.map((m) => (
+            <span class="text-metal-200">{m.icon} {m.text}</span>
+          ))
+        }
+      </div>
+      <div class="mt-8 flex flex-wrap gap-3">
+        {
+          c.hero.cta.map((cta) => (
+            <a
+              href={cta.href}
+              class={cta.primary
+                ? "rounded-full bg-gold-500 px-6 py-3 font-bold text-ink-950 transition hover:bg-gold-400"
+                : "rounded-full border border-white/25 px-6 py-3 font-bold text-white transition hover:border-gold-400 hover:text-gold-400"}
+            >
+              {cta.label}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <nav aria-label={locale === "ar" ? "مسار التنقل" : "Breadcrumb"} class="mx-auto max-w-6xl px-4 pt-8 text-xs text-metal-400">
+    <ol class="flex flex-wrap items-center gap-2">
+      {
+        breadcrumb.map((b, i) => (
+          <li class="flex items-center gap-2">
+            <a class="hover:text-gold-400" href={b.href}>{b.label}</a>
+            <span aria-hidden="true">›</span>
+          </li>
+        ))
+      }
+      <li><span class="text-gold-400">{c.hero.h1}</span></li>
+    </ol>
+  </nav>
+
+  <section id="about" class="mx-auto max-w-6xl px-4 py-16">
+    <p class="text-sm font-bold tracking-widest text-gold-400">{c.about.eyebrow}</p>
+    <h2 class="mt-2 text-3xl font-extrabold text-white">{c.about.h2}</h2>
+    <div class="mt-6 grid gap-8 lg:grid-cols-3">
+      <div class="space-y-4 lg:col-span-2 text-metal-200">
+        {
+          c.about.paragraphs.map((p) => <p class="leading-8">{p}</p>)
+        }
+      </div>
+      <Image
+        src={interiorImg}
+        alt={c.shopping.imgAlt}
+        widths={[480, 800, 1200]}
+        sizes="(min-width: 1024px) 33vw, 100vw"
+        loading="lazy"
+        class="h-full w-full rounded-2xl object-cover"
+      />
+    </div>
+    <dl class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
+      {
+        c.about.stats.map(([value, label]) => (
+          <div class="rounded-2xl border border-white/10 bg-ink-900 p-5">
+            <dt class="text-xs text-metal-400">{label}</dt>
+            <dd class="mt-2 text-xl font-extrabold text-gold-400">{value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <section id="directory" class="border-y border-white/10 bg-ink-900/60">
+    <div class="mx-auto max-w-6xl px-4 py-16">
+      <p class="text-sm font-bold tracking-widest text-gold-400">{c.directory.eyebrow}</p>
+      <h2 class="mt-2 text-3xl font-extrabold text-white">{c.directory.h2}</h2>
+      <p class="mt-4 max-w-3xl leading-8 text-metal-200">{c.directory.intro}</p>
+      <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {
+          c.directory.categories.map((cat) => (
+            <article class="rounded-2xl border border-white/10 bg-ink-900 p-6">
+              <h3 class="font-bold text-gold-400">{cat.title}</h3>
+              <p class="mt-3 text-sm leading-7 text-metal-400">{cat.desc}</p>
+              <ul class="mt-4 flex flex-wrap gap-2">
+                {
+                  cat.items.map((it) => (
+                    <li class="rounded-full border border-white/10 px-3 py-1 text-xs text-metal-200">
+                      {it}
+                    </li>
+                  ))
+                }
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section id="shopping" class="mx-auto max-w-6xl px-4 py-16">
+    <p class="text-sm font-bold tracking-widest text-gold-400">{c.shopping.eyebrow}</p>
+    <h2 class="mt-2 text-3xl font-extrabold text-white">{c.shopping.h2}</h2>
+    <p class="mt-4 max-w-3xl leading-8 text-metal-200">{c.shopping.intro}</p>
+    <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      {
+        c.shopping.items.map(([t, d]) => (
+          <article class="rounded-2xl border border-white/10 bg-ink-900 p-6">
+            <h3 class="font-bold text-white">{t}</h3>
+            <p class="mt-3 text-sm leading-7 text-metal-400">{d}</p>
+          </article>
+        ))
+      }
+    </div>
+    <Image
+      src={shoppingImg}
+      alt={c.shopping.imgAlt}
+      widths={[640, 1024, 1600]}
+      sizes="(min-width: 1024px) 80vw, 100vw"
+      loading="lazy"
+      class="mt-10 h-72 w-full rounded-2xl object-cover sm:h-96"
+    />
+  </section>
+
+  <section id="dining" class="border-y border-white/10 bg-ink-900/60">
+    <div class="mx-auto max-w-6xl px-4 py-16">
+      <p class="text-sm font-bold tracking-widest text-gold-400">{c.dining.eyebrow}</p>
+      <h2 class="mt-2 text-3xl font-extrabold text-white">{c.dining.h2}</h2>
+      <div class="mt-6 grid gap-8 lg:grid-cols-3">
+        <div class="space-y-4 lg:col-span-2 leading-8 text-metal-200">
+          {
+            c.dining.paragraphs.map((p) => <p>{p}</p>)
+          }
+        </div>
+        <Image
+          src={diningImg}
+          alt={c.dining.imgAlt}
+          widths={[480, 800, 1200]}
+          sizes="(min-width: 1024px) 33vw, 100vw"
+          loading="lazy"
+          class="h-full w-full rounded-2xl object-cover"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section id="entertainment" class="mx-auto max-w-6xl px-4 py-16">
+    <p class="text-sm font-bold tracking-widest text-gold-400">{c.entertainment.eyebrow}</p>
+    <h2 class="mt-2 text-3xl font-extrabold text-white">{c.entertainment.h2}</h2>
+    <div class="mt-10 grid gap-6 md:grid-cols-3">
+      {
+        c.entertainment.items.map(([t, d]) => (
+          <article class="rounded-2xl border border-white/10 bg-ink-900 p-6">
+            <h3 class="font-bold text-white">{t}</h3>
+            <p class="mt-3 text-sm leading-7 text-metal-400">{d}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section id="visit-info" class="border-y border-white/10 bg-ink-900/60">
+    <div class="mx-auto max-w-6xl px-4 py-16">
+      <p class="text-sm font-bold tracking-widest text-gold-400">{c.visitInfo.eyebrow}</p>
+      <h2 class="mt-2 text-3xl font-extrabold text-white">{c.visitInfo.h2}</h2>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        {
+          c.visitInfo.items.map(([t, d]) => (
+            <article class="rounded-2xl border border-white/10 bg-ink-900 p-6">
+              <h3 class="font-bold text-gold-400">{t}</h3>
+              <p class="mt-3 text-sm leading-7 text-metal-200">{d}</p>
+            </article>
+          ))
+        }
+      </div>
+      <p class="mt-6 text-sm leading-7 text-metal-400">{c.visitInfo.note}</p>
+    </div>
+  </section>
+
+  <section id="visit" class="mx-auto max-w-6xl px-4 py-16">
+    <p class="text-sm font-bold tracking-widest text-gold-400">{c.location.eyebrow}</p>
+    <h2 id="location" class="mt-2 text-3xl font-extrabold text-white">{c.location.h2}</h2>
+    <p class="mt-4 max-w-3xl leading-8 text-metal-200">{c.location.intro}</p>
+    <div class="mt-10 grid gap-8 lg:grid-cols-2">
+      <div class="space-y-4">
+        {
+          c.location.items.map(([t, d]) => (
+            <article class="rounded-2xl border border-white/10 bg-ink-900 p-6">
+              <h3 class="font-bold text-white">{t}</h3>
+              <p class="mt-3 text-sm leading-7 text-metal-400">{d}</p>
+            </article>
+          ))
+        }
+      </div>
+      <Image
+        src={entranceImg}
+        alt={c.location.imgAlt}
+        widths={[480, 800, 1200]}
+        sizes="(min-width: 1024px) 50vw, 100vw"
+        loading="lazy"
+        class="h-full w-full rounded-2xl object-cover"
+      />
+    </div>
+    <div class="mt-10 overflow-hidden rounded-2xl border border-white/10">
+      <iframe
+        title={locale === "ar" ? "خريطة موقع سيتي سنتر إربد على خرائط جوجل" : "Google Maps location of Irbid City Center"}
+        src={MAPS_EMBED}
+        width="100%"
+        height="420"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        style="border:0"
+      ></iframe>
+    </div>
+    <div class="mt-4">
+      <a
+        href={MAPS_LINK}
+        target="_blank"
+        rel="noopener"
+        class="inline-block rounded-full bg-gold-500 px-6 py-3 font-bold text-ink-950 transition hover:bg-gold-400"
+        >{locale === "ar" ? "فتح الموقع على خرائط جوجل" : "Open location on Google Maps"}</a
+      >
+    </div>
+    <p class="mt-6 text-sm leading-7 text-metal-400">
+      {locale === "ar" ? "للحصول على معلومات رسمية ومحدّثة عن السياحة في المنطقة، يمكن الرجوع إلى " : "For official and updated tourism information about the region, refer to "}
+      <a class="text-gold-400 underline decoration-dotted hover:text-gold-500" href={GOVT_TOURISM} target="_blank" rel="noopener noreferrer">{locale === "ar" ? "البوابة الرسمية للسياحة في الأردن" : "the official Jordan tourism portal"}</a>.
+    </p>
+  </section>
+
+  <section id="parking" class="border-y border-white/10 bg-ink-900/60">
+    <div class="mx-auto max-w-6xl px-4 py-16">
+      <p class="text-sm font-bold tracking-widest text-gold-400">{c.parking.eyebrow}</p>
+      <h2 class="mt-2 text-3xl font-extrabold text-white">{c.parking.h2}</h2>
+      <ul class="mt-6 grid gap-4 md:grid-cols-3">
+        {
+          c.parking.items.map((t) => (
+            <li class="rounded-2xl border border-white/10 bg-ink-900 p-6 text-sm leading-7 text-metal-200">{t}</li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section id="best-time" class="mx-auto max-w-6xl px-4 py-16">
+    <p class="text-sm font-bold tracking-widest text-gold-400">{c.bestTime.eyebrow}</p>
+    <h2 class="mt-2 text-3xl font-extrabold text-white">{c.bestTime.h2}</h2>
+    <div class="mt-8 grid gap-6 md:grid-cols-3">
+      {
+        c.bestTime.items.map(([t, d]) => (
+          <article class="rounded-2xl border border-white/10 bg-ink-900 p-6">
+            <h3 class="font-bold text-white">{t}</h3>
+            <p class="mt-3 text-sm leading-7 text-metal-400">{d}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section id="plans" class="border-y border-white/10 bg-ink-900/60">
+    <div class="mx-auto max-w-6xl px-4 py-16">
+      <p class="text-sm font-bold tracking-widest text-gold-400">{c.plans.eyebrow}</p>
+      <h2 class="mt-2 text-3xl font-extrabold text-white">{c.plans.h2}</h2>
+      <p class="mt-4 max-w-3xl leading-8 text-metal-200">{c.plans.intro}</p>
+      <div class="mt-10 grid gap-6 lg:grid-cols-3">
+        {
+          c.plans.items.map((p) => (
+            <article class="flex flex-col rounded-2xl border border-white/10 bg-ink-900 p-6">
+              <h3 class="text-lg font-bold text-gold-400">{p.title}</h3>
+              <p class="mt-1 text-xs text-metal-400">{p.tag}</p>
+              <ol class="mt-4 space-y-3 text-sm leading-7 text-metal-200">
+                {
+                  p.steps.map((s, i) => (
+                    <li class="flex gap-2">
+                      <span class="text-gold-400">{i + 1}.</span>
+                      <span>{s}</span>
+                    </li>
+                  ))
+                }
+              </ol>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section id="routes" class="mx-auto max-w-6xl px-4 py-16">
+    <p class="text-sm font-bold tracking-widest text-gold-400">{c.routes.eyebrow}</p>
+    <h2 class="mt-2 text-3xl font-extrabold text-white">{c.routes.h2}</h2>
+    <div class="mt-10 grid gap-6 lg:grid-cols-2">
+      {
+        c.routes.items.map((r) => (
+          <article class="rounded-2xl border border-white/10 bg-ink-900 p-6">
+            <div class="flex items-baseline justify-between gap-3">
+              <h3 class="text-lg font-bold text-white">{r.title}</h3>
+              <span class="text-xs text-gold-400">{r.time}</span>
+            </div>
+            <ol class="mt-4 space-y-3 text-sm leading-7 text-metal-200">
+              {
+                r.steps.map((s, i) => (
+                  <li class="flex gap-2">
+                    <span class="text-gold-400">{i + 1}.</span>
+                    <span>{s}</span>
+                  </li>
+                ))
+              }
+            </ol>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section id="services" class="border-y border-white/10 bg-ink-900/60">
+    <div class="mx-auto max-w-6xl px-4 py-16">
+      <p class="text-sm font-bold tracking-widest text-gold-400">{c.services.eyebrow}</p>
+      <h2 class="mt-2 text-3xl font-extrabold text-white">{c.services.h2}</h2>
+      <p class="mt-4 max-w-3xl leading-8 text-metal-200">{c.services.intro}</p>
+      <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {
+          c.services.items.map(([t, d]) => (
+            <article class="rounded-2xl border border-white/10 bg-ink-900 p-6">
+              <h3 class="font-bold text-gold-400">{t}</h3>
+              <p class="mt-3 text-sm leading-7 text-metal-400">{d}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section id="nearby" class="mx-auto max-w-6xl px-4 py-16">
+    <p class="text-sm font-bold tracking-widest text-gold-400">{c.nearby.eyebrow}</p>
+    <h2 class="mt-2 text-3xl font-extrabold text-white">{c.nearby.h2}</h2>
+    <p class="mt-4 max-w-3xl leading-8 text-metal-200">{c.nearby.intro}</p>
+    <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      {
+        c.nearby.items.map(([t, d]) => (
+          <article class="rounded-2xl border border-white/10 bg-ink-900 p-6">
+            <h3 class="font-bold text-white">{t}</h3>
+            <p class="mt-3 text-sm leading-7 text-metal-400">{d}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section id="background" class="border-y border-white/10 bg-ink-900/60">
+    <div class="mx-auto max-w-6xl px-4 py-16">
+      <p class="text-sm font-bold tracking-widest text-gold-400">{c.background.eyebrow}</p>
+      <h2 class="mt-2 text-3xl font-extrabold text-white">{c.background.h2}</h2>
+      <div class="mt-6 grid gap-8 lg:grid-cols-2">
+        <div class="space-y-4 leading-8 text-metal-200">
+          {
+            c.background.paragraphs.map((p) => <p>{p}</p>)
+          }
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-ink-900 p-6">
+          <h3 class="font-bold text-white">{locale === "ar" ? "مسؤولية الزائر" : "Visitor responsibility"}</h3>
+          <ul class="mt-4 space-y-3 text-sm leading-7 text-metal-400">
+            {
+              c.background.responsibility.map((r) => <li>{r}</li>)
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sources" class="mx-auto max-w-6xl px-4 py-16">
+    <p class="text-sm font-bold tracking-widest text-gold-400">{c.sources.eyebrow}</p>
+    <h2 class="mt-2 text-3xl font-extrabold text-white">{c.sources.h2}</h2>
+    <div class="mt-8 grid gap-8 lg:grid-cols-3">
+      <div class="space-y-4 lg:col-span-2 leading-8 text-metal-200">
+        {
+          c.sources.paragraphs.map((p) => <p>{p}</p>)
+        }
+      </div>
+      <div class="rounded-2xl border border-white/10 bg-ink-900 p-6">
+        <h3 class="font-bold text-white">{locale === "ar" ? "مصادر للتحقق" : "Sources to verify"}</h3>
+        <ul class="mt-4 space-y-3 text-sm leading-7 text-metal-400">
+          {
+            c.sources.links.map((l) => (
+              <li>
+                <a class="text-gold-400 underline decoration-dotted hover:text-gold-500" href={l.href} target="_blank" rel="noopener noreferrer">{l.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="mt-4 text-xs text-metal-400">{c.sources.note}</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="border-t border-white/10 bg-ink-900/60">
+    <div class="mx-auto max-w-4xl px-4 py-16">
+      <p class="text-sm font-bold tracking-widest text-gold-400">{locale === "ar" ? "الأسئلة الشائعة" : "FAQ"}</p>
+      <h2 class="mt-2 text-3xl font-extrabold text-white">{locale === "ar" ? "أسئلة يطرحها الزوار عادة" : "Questions visitors usually ask"}</h2>
+      <div class="mt-8 space-y-4">
+        {
+          c.faq.map((f) => (
+            <details class="group rounded-2xl border border-white/10 bg-ink-900 p-6">
+              <summary class="cursor-pointer list-none font-bold text-white marker:hidden">{f.q}</summary>
+              <p class="mt-3 text-sm leading-7 text-metal-400">{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</main>

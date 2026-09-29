@@ -1,13 +1,15 @@
 ---
-const links = [
-  { href: "#about", label: "نظرة عامة" },
-  { href: "#shopping", label: "التسوق" },
-  { href: "#dining", label: "المطاعم" },
-  { href: "#entertainment", label: "الترفيه" },
-  { href: "#visit", label: "الوصول" },
-  { href: "#plans", label: "خطط الزيارة" },
-  { href: "#faq", label: "الأسئلة" },
-];
+import { localeMeta, type Locale } from "../i18n";
+
+interface Props {
+  locale: Locale;
+  nav: { href: string; label: string }[];
+}
+const { locale, nav } = Astro.props as Props;
+const meta = localeMeta[locale];
+const switchMeta = localeMeta[meta.switchTo];
+const brand = locale === "ar" ? "سيتي سنتر إربد" : "Irbid City Center";
+const switchLabel = locale === "ar" ? "English" : "العربية";
 ---
 <header
   class="sticky top-0 z-50 border-b border-white/10 bg-ink-950/85 backdrop-blur"
@@ -15,13 +17,13 @@ const links = [
   <nav
     class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3"
   >
-    <a href="/" class="flex items-center gap-2">
+    <a href={meta.switchTo === "ar" ? "/" : "/en/"} class="flex items-center gap-2">
       <img src="/favicon.svg" alt="" class="h-8 w-8" />
-      <span class="text-lg font-bold text-gold-400">سيتي سنتر إربد</span>
+      <span class="text-lg font-bold text-gold-400">{brand}</span>
     </a>
     <ul class="hidden items-center gap-5 text-sm text-metal-200 lg:flex">
       {
-        links.map((l) => (
+        nav.map((l) => (
           <li>
             <a class="transition hover:text-gold-400" href={l.href}>
               {l.label}
@@ -30,10 +32,19 @@ const links = [
         ))
       }
     </ul>
-    <a
-      href="#visit"
-      class="rounded-full bg-gold-500 px-4 py-2 text-sm font-bold text-ink-950 transition hover:bg-gold-400"
-      >الموقع على الخريطة</a
-    >
+    <div class="flex items-center gap-3">
+      <a
+        href={switchMeta.switchHref}
+        hreflang={switchMeta.htmlLang}
+        lang={switchMeta.htmlLang}
+        class="rounded-full border border-white/20 px-3 py-1.5 text-xs font-bold text-metal-200 transition hover:border-gold-400 hover:text-gold-400"
+        >{switchLabel}</a
+      >
+      <a
+        href="#visit"
+        class="rounded-full bg-gold-500 px-4 py-2 text-sm font-bold text-ink-950 transition hover:bg-gold-400"
+        >{locale === "ar" ? "الموقع على الخريطة" : "Location on map"}</a
+      >
+    </div>
   </nav>
 </header>

@@ -1,0 +1,12 @@
+# 全站安全响应头；Workers Static Assets 会读取 _headers。
+# 强制 HTTPS（配合 Cloudflare 控制台 Always Use HTTPS 做 301）。
+/
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+
+# Service Worker 不得缓存
+/sw.js
+  Cache-Control: no-cache
