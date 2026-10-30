@@ -1,19 +1,14 @@
 ---
 import { Image } from "astro:assets";
-import { content, localeMeta, type Locale } from "../i18n";
-import heroImg from "../assets/images/irbid-city-center-main.jpg";
-import interiorImg from "../assets/images/irbid-city-center-interior.jpg";
-import shoppingImg from "../assets/images/irbid-city-center-shopping.jpg";
-import diningImg from "../assets/images/irbid-city-center-food-court.jpg";
-import entranceImg from "../assets/images/irbid-city-center-entrance.jpg";
+import { content, type Locale } from "../i18n";
+import heroImg from "../assets/images/mall-illustration.svg";
 
 interface Props {
   locale: Locale;
 }
 const { locale } = Astro.props as Props;
 const c = content[locale];
-const meta = localeMeta[locale];
-const MAPS_EMBED = `https://www.google.com/maps?q=Irbid%20City%20Centre%2C%20Irbid%2C%20Jordan&hl=${locale === "ar" ? "ar" : "en"}&output=embed`;
+const MAPS_EMBED = `https://www.google.com/maps?q=32.535751%2C35.8653365&hl=${locale === "ar" ? "ar" : "en"}&output=embed`;
 const MAPS_LINK = "https://maps.app.goo.gl/L71ekukFyjaVPVxZ9";
 const GOVT_TOURISM = "https://www.visitjordan.com/";
 const breadcrumb = locale === "ar"
@@ -34,8 +29,8 @@ const breadcrumb = locale === "ar"
     <Image
       src={heroImg}
       alt={locale === "ar"
-        ? "سيتي سنتر إربد (Irbid City Centre) — المنظر الرئيسي في مدينة إربد، الأردن"
-        : "Irbid City Center (سيتي سنتر إربد) — main view in Irbid, Jordan"}
+        ? "رسم هندسي أصلي؛ ليس صورة للمركز"
+        : "Original geometric illustration; not a mall photograph"}
       widths={[640, 1024, 1600, 1920]}
       sizes="100vw"
       loading="eager"
@@ -51,10 +46,11 @@ const breadcrumb = locale === "ar"
       <div class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
         {
           c.hero.meta.map((m) => (
-            <span class="text-metal-200">{m.icon} {m.text}</span>
+            <span class="text-metal-200">{m.icon} <bdi dir="auto">{m.text}</bdi></span>
           ))
         }
       </div>
+      <p class="mt-4 text-sm">{locale === "ar" ? "رسم أصلي وليس صورة للمركز." : "Original illustration, not a mall photograph."} <a href="/mall-illustration.svg" class="underline">SVG</a> · <a href="https://creativecommons.org/publicdomain/zero/1.0/" class="underline">CC0</a></p>
       <div class="mt-8 flex flex-wrap gap-3">
         {
           c.hero.cta.map((cta) => (
@@ -75,7 +71,7 @@ const breadcrumb = locale === "ar"
   <nav aria-label={locale === "ar" ? "مسار التنقل" : "Breadcrumb"} class="mx-auto max-w-6xl px-4 pt-8 text-xs text-metal-400">
     <ol class="flex flex-wrap items-center gap-2">
       {
-        breadcrumb.map((b, i) => (
+        breadcrumb.map((b) => (
           <li class="flex items-center gap-2">
             <a class="hover:text-gold-400" href={b.href}>{b.label}</a>
             <span aria-hidden="true">›</span>
@@ -89,22 +85,14 @@ const breadcrumb = locale === "ar"
   <section id="about" class="mx-auto max-w-6xl px-4 py-16">
     <p class="text-sm font-bold tracking-widest text-gold-400">{c.about.eyebrow}</p>
     <h2 class="mt-2 text-3xl font-extrabold text-white">{c.about.h2}</h2>
-    <div class="mt-6 grid gap-8 lg:grid-cols-3">
-      <div class="space-y-4 lg:col-span-2 text-metal-200">
+    <div class="mt-6 max-w-4xl">
+      <div class="space-y-4 text-metal-200">
         {
           c.about.paragraphs.map((p) => <p class="leading-8">{p}</p>)
         }
       </div>
-      <Image
-        src={interiorImg}
-        alt={c.shopping.imgAlt}
-        widths={[480, 800, 1200]}
-        sizes="(min-width: 1024px) 33vw, 100vw"
-        loading="lazy"
-        class="h-full w-full rounded-2xl object-cover"
-      />
-    </div>
-    <dl class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
+      </div>
+    <dl class="mt-10 grid grid-cols-2 gap-4">
       {
         c.about.stats.map(([value, label]) => (
           <div class="rounded-2xl border border-white/10 bg-ink-900 p-5">
@@ -121,7 +109,7 @@ const breadcrumb = locale === "ar"
       <p class="text-sm font-bold tracking-widest text-gold-400">{c.directory.eyebrow}</p>
       <h2 class="mt-2 text-3xl font-extrabold text-white">{c.directory.h2}</h2>
       <p class="mt-4 max-w-3xl leading-8 text-metal-200">{c.directory.intro}</p>
-      <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div class="mt-10 grid gap-6 md:grid-cols-2">
         {
           c.directory.categories.map((cat) => (
             <article class="rounded-2xl border border-white/10 bg-ink-900 p-6">
@@ -147,7 +135,7 @@ const breadcrumb = locale === "ar"
     <p class="text-sm font-bold tracking-widest text-gold-400">{c.shopping.eyebrow}</p>
     <h2 class="mt-2 text-3xl font-extrabold text-white">{c.shopping.h2}</h2>
     <p class="mt-4 max-w-3xl leading-8 text-metal-200">{c.shopping.intro}</p>
-    <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+    <div class="mt-10 grid gap-6 md:grid-cols-2">
       {
         c.shopping.items.map(([t, d]) => (
           <article class="rounded-2xl border border-white/10 bg-ink-900 p-6">
@@ -157,35 +145,19 @@ const breadcrumb = locale === "ar"
         ))
       }
     </div>
-    <Image
-      src={shoppingImg}
-      alt={c.shopping.imgAlt}
-      widths={[640, 1024, 1600]}
-      sizes="(min-width: 1024px) 80vw, 100vw"
-      loading="lazy"
-      class="mt-10 h-72 w-full rounded-2xl object-cover sm:h-96"
-    />
   </section>
 
   <section id="dining" class="border-y border-white/10 bg-ink-900/60">
     <div class="mx-auto max-w-6xl px-4 py-16">
       <p class="text-sm font-bold tracking-widest text-gold-400">{c.dining.eyebrow}</p>
       <h2 class="mt-2 text-3xl font-extrabold text-white">{c.dining.h2}</h2>
-      <div class="mt-6 grid gap-8 lg:grid-cols-3">
-        <div class="space-y-4 lg:col-span-2 leading-8 text-metal-200">
+      <div class="mt-6 max-w-4xl">
+        <div class="space-y-4 leading-8 text-metal-200">
           {
             c.dining.paragraphs.map((p) => <p>{p}</p>)
           }
         </div>
-        <Image
-          src={diningImg}
-          alt={c.dining.imgAlt}
-          widths={[480, 800, 1200]}
-          sizes="(min-width: 1024px) 33vw, 100vw"
-          loading="lazy"
-          class="h-full w-full rounded-2xl object-cover"
-        />
-      </div>
+          </div>
     </div>
   </section>
 
@@ -226,7 +198,7 @@ const breadcrumb = locale === "ar"
     <p class="text-sm font-bold tracking-widest text-gold-400">{c.location.eyebrow}</p>
     <h2 id="location" class="mt-2 text-3xl font-extrabold text-white">{c.location.h2}</h2>
     <p class="mt-4 max-w-3xl leading-8 text-metal-200">{c.location.intro}</p>
-    <div class="mt-10 grid gap-8 lg:grid-cols-2">
+    <div class="mt-10 max-w-4xl">
       <div class="space-y-4">
         {
           c.location.items.map(([t, d]) => (
@@ -237,15 +209,7 @@ const breadcrumb = locale === "ar"
           ))
         }
       </div>
-      <Image
-        src={entranceImg}
-        alt={c.location.imgAlt}
-        widths={[480, 800, 1200]}
-        sizes="(min-width: 1024px) 50vw, 100vw"
-        loading="lazy"
-        class="h-full w-full rounded-2xl object-cover"
-      />
-    </div>
+      </div>
     <div class="mt-10 overflow-hidden rounded-2xl border border-white/10">
       <iframe
         title={locale === "ar" ? "خريطة موقع سيتي سنتر إربد على خرائط جوجل" : "Google Maps location of Irbid City Center"}
@@ -329,39 +293,13 @@ const breadcrumb = locale === "ar"
     </div>
   </section>
 
-  <section id="routes" class="mx-auto max-w-6xl px-4 py-16">
-    <p class="text-sm font-bold tracking-widest text-gold-400">{c.routes.eyebrow}</p>
-    <h2 class="mt-2 text-3xl font-extrabold text-white">{c.routes.h2}</h2>
-    <div class="mt-10 grid gap-6 lg:grid-cols-2">
-      {
-        c.routes.items.map((r) => (
-          <article class="rounded-2xl border border-white/10 bg-ink-900 p-6">
-            <div class="flex items-baseline justify-between gap-3">
-              <h3 class="text-lg font-bold text-white">{r.title}</h3>
-              <span class="text-xs text-gold-400">{r.time}</span>
-            </div>
-            <ol class="mt-4 space-y-3 text-sm leading-7 text-metal-200">
-              {
-                r.steps.map((s, i) => (
-                  <li class="flex gap-2">
-                    <span class="text-gold-400">{i + 1}.</span>
-                    <span>{s}</span>
-                  </li>
-                ))
-              }
-            </ol>
-          </article>
-        ))
-      }
-    </div>
-  </section>
 
   <section id="services" class="border-y border-white/10 bg-ink-900/60">
     <div class="mx-auto max-w-6xl px-4 py-16">
       <p class="text-sm font-bold tracking-widest text-gold-400">{c.services.eyebrow}</p>
       <h2 class="mt-2 text-3xl font-extrabold text-white">{c.services.h2}</h2>
       <p class="mt-4 max-w-3xl leading-8 text-metal-200">{c.services.intro}</p>
-      <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div class="mt-10 grid gap-6 md:grid-cols-2">
         {
           c.services.items.map(([t, d]) => (
             <article class="rounded-2xl border border-white/10 bg-ink-900 p-6">
@@ -374,21 +312,6 @@ const breadcrumb = locale === "ar"
     </div>
   </section>
 
-  <section id="nearby" class="mx-auto max-w-6xl px-4 py-16">
-    <p class="text-sm font-bold tracking-widest text-gold-400">{c.nearby.eyebrow}</p>
-    <h2 class="mt-2 text-3xl font-extrabold text-white">{c.nearby.h2}</h2>
-    <p class="mt-4 max-w-3xl leading-8 text-metal-200">{c.nearby.intro}</p>
-    <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-      {
-        c.nearby.items.map(([t, d]) => (
-          <article class="rounded-2xl border border-white/10 bg-ink-900 p-6">
-            <h3 class="font-bold text-white">{t}</h3>
-            <p class="mt-3 text-sm leading-7 text-metal-400">{d}</p>
-          </article>
-        ))
-      }
-    </div>
-  </section>
 
   <section id="background" class="border-y border-white/10 bg-ink-900/60">
     <div class="mx-auto max-w-6xl px-4 py-16">
@@ -416,7 +339,7 @@ const breadcrumb = locale === "ar"
     <p class="text-sm font-bold tracking-widest text-gold-400">{c.sources.eyebrow}</p>
     <h2 class="mt-2 text-3xl font-extrabold text-white">{c.sources.h2}</h2>
     <div class="mt-8 grid gap-8 lg:grid-cols-3">
-      <div class="space-y-4 lg:col-span-2 leading-8 text-metal-200">
+      <div class="space-y-4 leading-8 text-metal-200">
         {
           c.sources.paragraphs.map((p) => <p>{p}</p>)
         }

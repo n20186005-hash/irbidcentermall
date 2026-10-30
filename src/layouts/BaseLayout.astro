@@ -10,6 +10,7 @@ interface Props {
   ogLocale?: string;
   ogLocaleAlternate?: string;
   hreflangs?: { hreflang: string; href: string }[];
+  robots?: string;
   jsonLd?: Record<string, unknown>[];
 }
 
@@ -22,11 +23,11 @@ const {
   ogLocale = "ar_JO",
   ogLocaleAlternate = "en_US",
   hreflangs = [],
-  jsonLd = [],
+  robots = "index,follow",
 } = Astro.props as Props;
 const SITE = "https://irbidcentermall.com";
 const canonicalURL = new URL(canonical, SITE).href;
-const ogImage = new URL("/irbid-city-center-main.jpg", SITE).href;
+const ogImage = new URL("/mall-illustration.svg", SITE).href;
 ---
 <!doctype html>
 <html lang={lang} dir={dir}>
@@ -35,6 +36,7 @@ const ogImage = new URL("/irbid-city-center-main.jpg", SITE).href;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="robots" content={robots} />
     <link rel="canonical" href={canonicalURL} />
     {
       hreflangs.map((h) => (
@@ -53,7 +55,7 @@ const ogImage = new URL("/irbid-city-center-main.jpg", SITE).href;
     <meta property="og:locale:alternate" content={ogLocaleAlternate} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:image:alt" content="سيتي سنتر إربد في مدينة إربد، الأردن" />
+    <meta property="og:image:alt" content={lang === "ar" ? "رسم هندسي أصلي؛ ليس صورة للمركز" : "Original geometric illustration; not a mall photograph"} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={ogImage} />
     <link rel="manifest" href="/manifest.webmanifest" />

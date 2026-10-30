@@ -15,13 +15,13 @@ const switchLabel = locale === "ar" ? "English" : "العربية";
   class="sticky top-0 z-50 border-b border-white/10 bg-ink-950/85 backdrop-blur"
 >
   <nav
-    class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3"
+    class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-3"
   >
-    <a href={meta.switchTo === "ar" ? "/" : "/en/"} class="flex items-center gap-2">
+    <a href={locale === "ar" ? "/" : "/en/"} class="flex items-center gap-2">
       <img src="/favicon.svg" alt="" class="h-8 w-8" />
       <span class="text-lg font-bold text-gold-400">{brand}</span>
     </a>
-    <ul class="hidden items-center gap-5 text-sm text-metal-200 lg:flex">
+    <ul class="flex w-full flex-wrap items-center gap-x-5 gap-y-2 text-sm text-metal-200 lg:w-auto">
       {
         nav.map((l) => (
           <li>
@@ -34,7 +34,7 @@ const switchLabel = locale === "ar" ? "English" : "العربية";
     </ul>
     <div class="flex items-center gap-3">
       <a
-        href={switchMeta.switchHref}
+        href={meta.switchHref}
         hreflang={switchMeta.htmlLang}
         lang={switchMeta.htmlLang}
         class="rounded-full border border-white/20 px-3 py-1.5 text-xs font-bold text-metal-200 transition hover:border-gold-400 hover:text-gold-400"

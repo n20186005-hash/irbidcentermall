@@ -24,7 +24,7 @@ const jsonLd = buildJsonLd(locale, c.faq);
   <Fragment slot="head">
     {
       jsonLd.map((data) => (
-        <script type="application/ld+json" set:html={JSON.stringify(data)} />
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(data)} />
       ))
     }
   </Fragment>

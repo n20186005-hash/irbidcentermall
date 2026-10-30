@@ -1,1 +1,1 @@
-ضع صور JPG المحلية هنا قبل النشر.
+Original geometric illustration for this independent guide, CC0: https://creativecommons.org/publicdomain/zero/1.0/ . Not a photograph or depiction of the mall. Former photos removed because source identity/reuse rights were not established. Responsive presentation may crop the illustration.

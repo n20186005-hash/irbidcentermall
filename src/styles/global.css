@@ -11,3 +11,6 @@
 }
 html { scroll-behavior: smooth; }
 body { font-family: "Tajawal", "Segoe UI", Tahoma, sans-serif; }
+
+h1, h2 { line-height: 1.3; }
+nav a { overflow-wrap: anywhere; }

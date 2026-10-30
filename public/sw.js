@@ -1,47 +1,65 @@
-const CACHE = "icc-v1";
-const ASSETS = [
-  "/",
-  "/manifest.webmanifest",
-  "/favicon.svg",
-  "/favicon-32.png",
-  "/apple-touch-icon.png",
-];
+/* Irbid City Center independent guide — offline service worker.
+   Strategy: precache the app shell, network-first for navigations with an
+   offline fallback, stale-while-revalidate for same-origin static assets.
+   Cross-origin requests (Google Analytics, Google Maps) always go to the
+   network so they keep working normally. */
 
-self.addEventListener("install", (event) => {
+const VERSION = 'irbid-guide-2026-10-29';
+
+const PRECACHE = ['/', '/en/', '/favicon.svg'];
+
+self.addEventListener('install', (event) => {
   event.waitUntil(
     caches
-      .open(CACHE)
-      .then((cache) => cache.addAll(ASSETS))
+      .open(VERSION)
+      .then((cache) => cache.addAll(PRECACHE))
       .then(() => self.skipWaiting())
   );
 });
 
-self.addEventListener("activate", (event) => {
+self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches
       .keys()
-      .then((keys) =>
-        Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
-      )
+      .then((keys) => Promise.all(keys.filter((key) => key !== VERSION).map((key) => caches.delete(key))))
       .then(() => self.clients.claim())
   );
 });
 
-self.addEventListener("fetch", (event) => {
-  const req = event.request;
-  if (req.method !== "GET") return;
-  if (new URL(req.url).origin !== self.location.origin) return;
+self.addEventListener('fetch', (event) => {
+  const request = event.request;
+  if (request.method !== 'GET') return;
+
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin) return;
+
+  if (request.mode === 'navigate') {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          if (['/','/en/'].includes(url.pathname) && response.status === 200) {
+            const copy = response.clone();
+            caches.open(VERSION).then((cache) => cache.put(url.pathname, copy));
+          }
+          return response;
+        })
+        .catch(async () => (['/','/en/'].includes(url.pathname) && await caches.match(url.pathname)) || new Response('Page unavailable offline',{status:503,headers:{'X-Robots-Tag':'noindex'}}))
+    );
+    return;
+  }
 
   event.respondWith(
-    caches.match(req).then((cached) => {
-      if (cached) return cached;
-      return fetch(req)
-        .then((res) => {
-          const copy = res.clone();
-          caches.open(CACHE).then((cache) => cache.put(req, copy));
-          return res;
+    caches.match(request).then((cached) => {
+      const network = fetch(request)
+        .then((response) => {
+          if (response && response.status === 200 && response.type === 'basic') {
+            const copy = response.clone();
+            caches.open(VERSION).then((cache) => cache.put(request, copy));
+          }
+          return response;
         })
-        .catch(() => caches.match("/"));
+        .catch(() => cached);
+      return cached || network;
     })
   );
 });

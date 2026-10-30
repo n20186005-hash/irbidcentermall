@@ -7,7 +7,7 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   // site 必须设置，@astrojs/sitemap 才能产出绝对 URL 的 sitemap-index.xml。
   site: 'https://irbidcentermall.com',
-  integrations: [sitemap()],
+  integrations: [sitemap({filter: (page) => !/\/404(?:\.html|\/)?$/.test(new URL(page).pathname), customPages: ['https://irbidcentermall.com/privacy-policy','https://irbidcentermall.com/terms','https://irbidcentermall.com/en/privacy-policy','https://irbidcentermall.com/en/terms'], i18n: {defaultLocale: 'ar',locales: {ar: 'ar-JO',en: 'en-US'}}})],
   vite: {
     plugins: [tailwindcss()],
   },

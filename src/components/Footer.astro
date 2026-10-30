@@ -28,8 +28,8 @@ const linksLabel = locale === "ar" ? "روابط" : "Links";
       <p class="mt-4 text-sm leading-7 text-metal-400">{footer.tagline}</p>
       <p class="mt-3 text-xs leading-6 text-metal-400">
         {locale === "ar"
-          ? "حقوق الصور: جميع الصور المعروضة في هذا الموقع تعود ملكيتها وحقوق نشرها إلى المصوّرين الأصليين وأصحاب الحقوق."
-          : "Image rights: all images shown on this site belong to their original photographers and rights holders."}
+          ? "رسم تجريدي أصلي لهذا الدليل، وفق CC0، وليس صورة للمركز؛ قد يُقص عند العرض المتجاوب."
+          : "Original abstract illustration for this guide under CC0; not a mall photograph. Responsive display may crop it."}
       </p>
     </div>
     <div>
@@ -38,7 +38,7 @@ const linksLabel = locale === "ar" ? "روابط" : "Links";
         {
           footer.quick.map((q) => (
             <li>
-              {q.label}: {q.value}
+              {q.label}: <bdi dir="auto">{q.value}</bdi>
             </li>
           ))
         }
